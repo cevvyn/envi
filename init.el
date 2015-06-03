@@ -103,8 +103,21 @@
      (define-key company-active-map [tab] (lambda () (interactive) (company-complete-common-or-cycle 1)))
      (define-key company-active-map (kbd "<backtab>") (lambda () (interactive) (company-complete-common-or-cycle -1)))
      (define-key company-active-map [<backtab>] (lambda () (interactive) (company-complete-common-or-cycle -1)))
-     (add-to-list 'company-backends 'company-tern)
+     ;; (add-to-list 'company-backends 'company-tern)
      ))
+
+(add-hook 'js-mode-hook
+          (lambda ()
+            (add-to-list 'company-backends 'company-tern)))
+
+(add-hook 'python-mode-hook
+          (lambda ()
+            (jedi:setup)
+            (elpy-enable)))
+
+(when (require 'flycheck nil t)
+  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+  (add-hook 'elpy-mode-hook 'flycheck-mode))
 
 ;; Ace Jump Mode
 (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)

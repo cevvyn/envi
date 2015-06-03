@@ -11,7 +11,7 @@
    (quote
     (company-bbdb company-nxml company-css company-eclim company-semantic company-clang company-xcode company-cmake company-capf
 		  (company-dabbrev-code company-gtags company-etags company-keywords)
-		  company-oddmuse company-files company-dabbrev company-ispell)))
+		  company-oddmuse company-files company-dabbrev company-ispell company-jedi)))
  '(custom-safe-themes
    (quote
     ("357d5abe6f693f2875bb3113f5c031b7031f21717e8078f90d9d9bc3a14bcbd8" "33bb2c9b6e965f9c3366c57f8d08a94152954d4e2124dc621953f5a8d7e9ca41" default)))
