@@ -110,10 +110,11 @@
           (lambda ()
             (add-to-list 'company-backends 'company-tern)))
 
+(elpy-enable)
 (add-hook 'python-mode-hook
           (lambda ()
             (jedi:setup)
-            (elpy-enable)))
+            (elpy-mode)))
 
 (when (require 'flycheck nil t)
   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
