@@ -10,7 +10,7 @@
 (package-initialize)
 
 ;; Load Theme
-(load-theme 'material t)
+(load-theme 'espresso t)
 
 ;; OSX Custom settings
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
@@ -18,6 +18,9 @@
 
 ;; Do not show startup message
 (setq inhibit-startup-message t)
+
+;; Auto refresh files on external changes
+(global-auto-revert-mode t)
 
 ;; Keep emacs Custom-settings in separate file
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
