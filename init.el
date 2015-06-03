@@ -12,9 +12,25 @@
 ;; Load Theme
 (load-theme 'espresso t)
 
+;; Custom functions
+(defun clean-up-buffer-or-region ()
+  "Untabifies, indents and deletes trailing whitespace from buffer or region."
+  (interactive)
+  (save-excursion
+    (unless (region-active-p)
+      (mark-whole-buffer))
+    (untabify (region-beginning) (region-end))
+    (indent-region (region-beginning) (region-end))
+    (save-restriction
+      (narrow-to-region (region-beginning) (region-end))
+      (delete-trailing-whitespace))))
+
 ;; OSX Custom settings
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+
+;; Handle tabs
+(setq-default indent-tabs-mode nil)
 
 ;; Do not show startup message
 (setq inhibit-startup-message t)
@@ -27,21 +43,46 @@
 (load custom-file)
 
 ;; Appearance
+;; -------------------------------------------------------------------------
 (setq-default line-spacing 10)
 (setq-default cursor-type 'bar)
 (setq-default cursor-in-non-selected-windows 'hbar)
 
+;; Answer y or n instead of yes or no
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+;; Global keybindings
+;; -------------------------------------------------------------------------
+;; Perform general cleanup.
+(global-set-key (kbd "C-c n") 'clean-up-buffer-or-region)
+
+;; Shell
+(global-set-key (kbd "<f2>") 'shell)
+
+;; Align regexp
+(global-set-key (kbd "<f3>") 'align-regexp)
+
+;; Font size
+(define-key global-map (kbd "C-+") 'text-scale-increase)
+(define-key global-map (kbd "C--") 'text-scale-decrease)
+
+;; Multiple-cursors
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-(global-set-key (kbd "C->") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-next-like-this)
+(global-set-key (kbd "C->") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+
+;; Magit
+(setq magit-last-seen-setup-instructions "1.4.0")
+(global-set-key (kbd "<f1>") 'magit-status)
+
 
 ;; Avy
 (avy-setup-default)
 (global-set-key (kbd "C-'") 'avy-goto-char-2)
 (global-set-key (kbd "M-g f") 'avy-goto-line)
 (global-set-key (kbd "M-g w") 'avy-goto-word-1)
-		
+
 ;; IDO
 (ido-mode 1)
 (ido-vertical-mode 1)
