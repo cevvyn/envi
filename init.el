@@ -10,7 +10,14 @@
 (package-initialize)
 
 ;; Load Theme
-(load-theme 'espresso t)
+(load-theme 'solarized-light t)
+;; (add-hook 'after-make-frame-functions
+;;           (lambda (frame)
+;;             (let ((mode (if (display-graphic-p frame) 'light 'dark)))
+;;               (set-frame-parameter frame 'background-mode mode)
+;;               (set-terminal-parameter frame 'background-mode mode))
+;;             (enable-theme 'solarized)))
+
 
 ;; Custom functions
 (defun clean-up-buffer-or-region ()
