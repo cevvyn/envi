@@ -7,3 +7,4 @@ elpa
 projectile*.*
 ido.last
 .mc-lists.el
+.emacs.desktop*
