@@ -99,6 +99,10 @@
 (setq-default cursor-type 'bar)
 (setq-default cursor-in-non-selected-windows 'hbar)
 
+;; Show matching parens
+(show-paren-mode 1)
+(setq show-paren-delay 0)
+
 ;; Answer y or n instead of yes or no
 (defalias 'yes-or-no-p 'y-or-n-p)
 
@@ -123,10 +127,32 @@
 (global-set-key (kbd "C->") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
+;; Move between windows (windmove)
+(global-set-key (kbd "C-c <left>")  'windmove-left)
+(global-set-key (kbd "C-c <right>") 'windmove-right)
+(global-set-key (kbd "C-c <up>")    'windmove-up)
+(global-set-key (kbd "C-c <down>")  'windmove-down)
+
+;; Split window
+(global-set-key (kbd "C-x <right>") 'split-window-right)
+(global-set-key (kbd "C-x <down>") 'split-window-below)
+
+;; Kill current active buffer
+(global-set-key (kbd "C-c k") 'kill-this-buffer)
+
+
+
 ;; Magit
 (setq magit-last-seen-setup-instructions "1.4.0")
 (global-set-key (kbd "<f1>") 'magit-status)
 
+;; Smartparens
+(smartparens-global-mode t)
+(require 'smartparens-config)
+
+;; Flex isearch
+(global-set-key (kbd "C-M-s") #'flx-isearch-forward)
+(global-set-key (kbd "C-M-r") #'flx-isearch-backward)
 
 ;; Avy
 (avy-setup-default)
@@ -138,6 +164,8 @@
 (ido-mode 1)
 (ido-vertical-mode 1)
 (ido-everywhere)
+(setq ido-enable-flex-matching t)
+(setq ido-use-faces nil)
 
 (global-set-key (kbd "C-x o") 'ido-select-window)
 
