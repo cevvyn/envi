@@ -12,6 +12,8 @@
     (company-bbdb company-nxml company-css company-eclim company-semantic company-clang company-xcode company-cmake company-capf
                   (company-dabbrev-code company-gtags company-etags company-keywords)
                   company-oddmuse company-files company-dabbrev company-ispell company-jedi)))
+ '(company-dabbrev-minimum-length 3)
+ '(company-gtags-modes (quote (prog-mode jde-mode php-mode)))
  '(compilation-message-face (quote default))
  '(cua-global-mark-cursor-color "#2aa198")
  '(cua-normal-cursor-color "#657b83")

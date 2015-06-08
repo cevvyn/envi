@@ -39,11 +39,11 @@
 
 ;; remove desktop after it's been read
 (add-hook 'desktop-after-read-hook
-	  '(lambda ()
-	     ;; desktop-remove clears desktop-dirname
-	     (setq desktop-dirname-tmp desktop-dirname)
-	     (desktop-remove)
-	     (setq desktop-dirname desktop-dirname-tmp)))
+          '(lambda ()
+             ;; desktop-remove clears desktop-dirname
+             (setq desktop-dirname-tmp desktop-dirname)
+             (desktop-remove)
+             (setq desktop-dirname desktop-dirname-tmp)))
 
 (defun saved-session ()
   (file-exists-p (concat desktop-dirname "/" desktop-base-file-name)))
@@ -62,16 +62,16 @@
   (interactive)
   (if (saved-session)
       (if (y-or-n-p "Overwrite existing desktop? ")
-	  (desktop-save-in-desktop-dir)
-	(message "Session not saved."))
-  (desktop-save-in-desktop-dir)))
+          (desktop-save-in-desktop-dir)
+        (message "Session not saved."))
+    (desktop-save-in-desktop-dir)))
 
 ;; ask user whether to restore desktop at start-up
 (add-hook 'after-init-hook
-	  '(lambda ()
-	     (if (saved-session)
-		 (if (y-or-n-p "Restore desktop? ")
-		     (session-restore)))))
+          '(lambda ()
+             (if (saved-session)
+                 (if (y-or-n-p "Restore desktop? ")
+                     (session-restore)))))
 
 ;; OSX Custom settings
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
@@ -160,14 +160,33 @@
 (global-set-key (kbd "M-g f") 'avy-goto-line)
 (global-set-key (kbd "M-g w") 'avy-goto-word-1)
 
-;; IDO
-(ido-mode 1)
-(ido-vertical-mode 1)
-(ido-everywhere)
-(setq ido-enable-flex-matching t)
-(setq ido-use-faces nil)
+;; Projectile
+(projectile-global-mode)
+(setq projectile-completion-system 'helm)
+(helm-projectile-on)
 
-(global-set-key (kbd "C-x o") 'ido-select-window)
+;; HELM
+;; (require 'helm-projectile)
+
+(setq helm-buffers-fuzzy-matching t)
+(helm-mode 1)
+
+(define-key helm-find-files-map (kbd "C-c C-k") 'helm-find-files-up-one-level)
+
+(defun helm-project-files ()
+  (interactive)
+  (helm-other-buffer '(helm-c-source-projectile-files-list) "*Project Files*"))
+
+(diminish 'helm-mode)
+
+;; IDO
+;; (ido-mode 1)
+;; (ido-vertical-mode 1)
+;; (ido-everywhere)
+;; (setq ido-enable-flex-matching t)
+;; (setq ido-use-faces nil)
+
+;; (global-set-key (kbd "C-x o") 'ido-select-window)
 
 ;; Flycheck
 (add-hook 'after-init-hook #'global-flycheck-mode)
@@ -182,13 +201,14 @@
      (define-key company-active-map [tab] (lambda () (interactive) (company-complete-common-or-cycle 1)))
      (define-key company-active-map (kbd "<backtab>") (lambda () (interactive) (company-complete-common-or-cycle -1)))
      (define-key company-active-map [<backtab>] (lambda () (interactive) (company-complete-common-or-cycle -1)))
-     ;; (add-to-list 'company-backends 'company-tern)
      ))
 
+;; JAVASCRIPT
 (add-hook 'js-mode-hook
           (lambda ()
             (add-to-list 'company-backends 'company-tern)))
 
+;; PYTHON
 (elpy-enable)
 (add-hook 'python-mode-hook
           (lambda ()
@@ -199,11 +219,15 @@
   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
   (add-hook 'elpy-mode-hook 'flycheck-mode))
 
-;; (add-hook 'php-mode-hook
-;;           (lambda ()
-;;             (php-extras-company-setup)
-;;             (add-to-list 'company-backends 'php-extras-company)))
+;; PHP
+(add-hook 'php-mode-hook
+          (lambda ()
+            (ggtags-mode 1)
+            (add-to-list 'company-backends 'company-gtags)))
 
+
+;; YASNIPPETS
+(yas-global-mode 1)
 
 ;; Add yasnippet support for all company backends
 ;; https://github.com/syl20bnr/spacemacs/pull/179
@@ -217,9 +241,6 @@
             '(:with company-yasnippet))))
 
 (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
-
-;; Projectile
-(projectile-global-mode)
 
 ;; Enable org export to odt (OpenDocument Text)
 ;; It is disabled by default in org 8.x
