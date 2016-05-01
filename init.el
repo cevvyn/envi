@@ -1,13 +1,49 @@
 ;; Add extra repos to package manager
+(require 'cl)
 (require 'package)
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/") t)
-(add-to-list 'package-archives
-             '("marmalade" . "http://marmalade-repo.org/packages/") t)
 
-(when (< emacs-major-version 24)
-  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+(setq cfg-var:packages '
+      (
+       ace-jump-mode
+       auto-complete
+       avy
+       company
+       company-jedi
+       company-web
+       jedi
+       js2-mode
+       magit
+       material-theme
+       monokai-theme
+       neotree
+       php-mode
+       projectile
+       pyimpsort
+       python-environment
+       pyvenv
+       solarized-theme
+       smartparens
+       web-mode
+       yaml-mode
+       yasnippet
+       ))
+
+(defun cfg:install-packages ()
+    (let ((pkgs (remove-if #'package-installed-p cfg-var:packages)))
+        (when pkgs
+            (message "%s" "Emacs refresh packages database...")
+            (package-refresh-contents)
+            (message "%s" " done.")
+            (dolist (p cfg-var:packages)
+                (package-install p)))))
+
+(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/") t)
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 (package-initialize)
+
+(cfg:install-packages)
 
 ;; Load Theme
 (load-theme 'solarized-light t)
