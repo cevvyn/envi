@@ -10,6 +10,8 @@
        company-jedi
        company-web
        elpy
+       ;; Fetch path from SHELL
+       exec-path-from-shell
        ;; GO
        go-mode
        go-eldoc
@@ -184,7 +186,10 @@
 ;; Kill current active buffer
 (global-set-key (kbd "C-c k") 'kill-this-buffer)
 
-
+;; LOAD PATH
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize)
+  (exec-path-from-shell-copy-env "GOPATH"))
 
 ;; Magit
 (setq magit-last-seen-setup-instructions "1.4.0")
