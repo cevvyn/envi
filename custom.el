@@ -48,6 +48,9 @@
    (quote
     ("#fdf6e3" "#fdf6e3" "#fdf6e3" "#fdf6e3" "#fdf6e3" "#fdf6e3" "#fdf6e3" "#fdf6e3")))
  '(magit-diff-use-overlays nil)
+ '(package-selected-packages
+   (quote
+    (yasnippet yaml-mode web-mode smartparens solarized-theme pyvenv python-environment pyimpsort projectile php-mode neotree monokai-theme material-theme magit js2-mode jedi company-web company-jedi company avy auto-complete ace-jump-mode)))
  '(pos-tip-background-color "#eee8d5")
  '(pos-tip-foreground-color "#586e75")
  '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#eee8d5" 0.2))

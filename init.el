@@ -5,11 +5,17 @@
 (setq cfg-var:packages '
       (
        ace-jump-mode
-       auto-complete
        avy
        company
        company-jedi
        company-web
+       elpy
+       ;; GO
+       go-mode
+       go-eldoc
+       company-go
+       helm
+       helm-projectile
        jedi
        js2-mode
        magit
@@ -18,11 +24,13 @@
        neotree
        php-mode
        projectile
+       project-explorer
        pyimpsort
        python-environment
        pyvenv
        solarized-theme
        smartparens
+       smooth-scroll
        web-mode
        yaml-mode
        yasnippet
@@ -199,10 +207,11 @@
 ;; Projectile
 (projectile-global-mode)
 (setq projectile-completion-system 'helm)
-(helm-projectile-on)
+
 
 ;; HELM
-;; (require 'helm-projectile)
+(require 'helm-projectile)
+(helm-projectile-on)
 
 (setq helm-buffers-fuzzy-matching t)
 (helm-mode 1)
@@ -213,7 +222,7 @@
   (interactive)
   (helm-other-buffer '(helm-c-source-projectile-files-list) "*Project Files*"))
 
-(diminish 'helm-mode)
+;; (diminish 'helm-mode)
 
 ;; IDO
 ;; (ido-mode 1)
@@ -261,6 +270,50 @@
             (ggtags-mode 1)
             (add-to-list 'company-backends 'company-gtags)))
 
+;; GOLANG
+(defun go-mode-setup ()
+  (go-eldoc-setup))
+
+(add-hook 'go-mode-hook 'go-mode-setup)
+
+;;Format before saving
+(defun go-mode-setup ()
+  (go-eldoc-setup)
+  (add-hook 'before-save-hook 'gofmt-before-save))
+(add-hook 'go-mode-hook 'go-mode-setup)
+
+;;Goimports
+(defun go-mode-setup ()
+  (go-eldoc-setup)
+  (setq gofmt-command "goimports")
+  (add-hook 'before-save-hook 'gofmt-before-save))
+(add-hook 'go-mode-hook 'go-mode-setup)
+
+;;Godef, shows function definition when calling godef-jump
+(defun go-mode-setup ()
+  (go-eldoc-setup)
+  (setq gofmt-command "goimports")
+  (add-hook 'before-save-hook 'gofmt-before-save)
+  (local-set-key (kbd "M-.") 'godef-jump))
+(add-hook 'go-mode-hook 'go-mode-setup)
+
+;;Custom Compile Command
+(defun go-mode-setup ()
+  (setq compile-command "go build -v && go test -v && go vet && golint && errcheck")
+  (define-key (current-local-map) "\C-c\C-c" 'compile)
+  (go-eldoc-setup)
+  (setq gofmt-command "goimports")
+  (add-hook 'before-save-hook 'gofmt-before-save)
+  (local-set-key (kbd "M-.") 'godef-jump))
+(add-hook 'go-mode-hook 'go-mode-setup)
+
+;; (add-to-list 'load-path (concat (getenv "GOPATH")  "/src/github.com/golang/lint/misc/emacs"))
+(add-to-list 'load-path "/home/kevin/go/src/github.com/golang/lint/misc/emacs")
+(require 'golint)
+
+;; PROJECT EXPLORER
+(require 'project-explorer)
+(global-set-key (kbd "C-c e") 'project-explorer-toggle)
 
 ;; YASNIPPETS
 (yas-global-mode 1)
